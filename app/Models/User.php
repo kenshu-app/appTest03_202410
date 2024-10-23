@@ -45,4 +45,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function books()
+    {
+        // ユーザは書籍を多数持つ
+        return $this->hasMany(Book::class);
+    }
 }

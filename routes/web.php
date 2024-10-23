@@ -13,3 +13,5 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 require __DIR__.'/auth.php';
+
+Route::resource('books', App\Http\Controllers\BookController::class);
