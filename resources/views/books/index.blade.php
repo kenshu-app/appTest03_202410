@@ -48,7 +48,7 @@
                     </div>
                 @endforeach
             </div>
+            <div class="d-flex flex-end my-5">{{ $books->links() }}</div>
         </div>
-        <div class="d-flex flex-end my-5">{{ $books->links() }}</div>
     </section>
 </x-app-layout>
