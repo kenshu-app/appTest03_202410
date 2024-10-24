@@ -36,7 +36,82 @@
                         </div>
                     </div>
                     <div id="tab-panel2" class="tab-panel js-tab-panel h-auto" tabindex="0" aria-labelledby="tab2">
-                        タブパネル2の内容</div>
+                        {{-- 書籍の登録IDとログインIDが同じ(自身が登録した書籍) --}}
+                        @if ($book->user_id == Auth::id())
+                            <div class="p-4 w-full">
+                                <div
+                                    class="h-full px-6 pt-12 pb-2 rounded-lg border-2 border-gray-400 flex flex-col relative overflow-hidden">
+                                    <span
+                                        class="bg-gray-400 text-white px-3 py-3 tracking-widest text-xs absolute right-0 top-0 rounded-bl">{{ __('like') }}</span>
+                                    <h1
+                                        class="text-2xl text-gray-600 font-light flex items-center pb-4 mb-4 border-b border-gray-200">
+                                        <span>{{ __('mylike') }}</span>
+                                    </h1>
+                                </div>
+                            </div>
+                            {{-- 書籍の登録IDとログインIDが異なる(他者が登録した書籍) --}}
+                        @else
+                            <div class="p-4 w-full">
+                                <div
+                                    class="h-full p-6 rounded-lg border-2 border-indigo-500 flex flex-col relative overflow-hidden">
+                                    <span
+                                        class="bg-indigo-500 text-white px-3 py-1 tracking-widest text-xs absolute right-0 top-0 rounded-bl">{{ __('like') }}</span>
+                                    <h2 class="text-sm tracking-widest title-font mb-1 font-medium">
+                                        {{ $book->publisher }}</h2>
+                                    <h1
+                                        class="text-5xl text-gray-900 leading-none flex items-center pb-4 mb-4 border-b border-gray-200">
+                                        <span>{{ $book->title }}</span>
+                                        <span class="text-lg ml-2 font-normal text-gray-500">{{ $book->author }}</span>
+                                    </h1>
+                                    <p class="flex items-center text-gray-600 mb-2">
+                                        <span
+                                            class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-gray-400 text-white rounded-full flex-shrink-0">
+                                            <svg fill="none" stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-width="2.5" class="w-3 h-3"
+                                                viewBox="0 0 24 24">
+                                                <path d="M20 6L9 17l-5-5"></path>
+                                            </svg>
+                                        </span>{{ __('addlike') }}
+                                    </p>
+                                    {{-- お気に入りが追加済みかを確認(trueは登録済みであれば) --}}
+                                    @if (Auth::user()->isLike($book->id))
+                                        <form action="{{ route('likes.destroy') }}" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <input type="hidden" name="book_id" value="{{ $book->id }}">
+                                            <button
+                                                class="flex items-center mt-3 text-white bg-indigo-500 border-0 py-2 px-4 w-full focus:outline-none hover:bg-indigo-600 rounded">{{ __('like') . __('delete') }}
+                                                <svg fill="none" stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-auto"
+                                                    viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M 4.9902344 3.9902344 A 1.0001 1.0001 0 0 0 4.2929688 5.7070312 L 10.585938 12 L 4.2929688 18.292969 A 1.0001 1.0001 0 1 0 5.7070312 19.707031 L 12 13.414062 L 18.292969 19.707031 A 1.0001 1.0001 0 1 0 19.707031 18.292969 L 13.414062 12 L 19.707031 5.7070312 A 1.0001 1.0001 0 0 0 18.980469 3.9902344 A 1.0001 1.0001 0 0 0 18.292969 4.2929688 L 12 10.585938 L 5.7070312 4.2929688 A 1.0001 1.0001 0 0 0 4.9902344 3.9902344 z">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                        {{-- 登録済みでなければ追加ボタンを表示 --}}
+                                    @else
+                                        <form action="{{ route('likes.store') }}" method="post">
+                                            @csrf
+                                            <input type="hidden" name="book_id" value="{{ $book->id }}">
+                                            <button
+                                                class="flex items-center mt-auto text-white bg-indigo-500 border-0 py-2 px-4 w-full focus:outline-none hover:bg-indigo-600 rounded">{{ __('like') . __('create') }}
+                                                <svg fill="white" stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-auto"
+                                                    viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    @endif
+                                    <p class="text-xs text-gray-500 mt-3">{{ __('navlike') }}</p>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                     <div id="tab-panel3" class="tab-panel js-tab-panel h-auto" tabindex="0" aria-labelledby="tab3">
                         タブパネル3の内容</div>
                     <div class="flex">

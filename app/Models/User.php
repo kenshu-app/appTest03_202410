@@ -51,4 +51,14 @@ class User extends Authenticatable
         // ユーザは書籍を多数持つ
         return $this->hasMany(Book::class);
     }
+
+    public function likeBooks()
+    {
+        return $this->belongsToMany(Book::class, 'likes')->withTimestamps();
+    }
+
+    public function isLike($book_id)
+    {
+        return $this->likeBooks()->where('books.id', $book_id)->exists();
+    }
 }
