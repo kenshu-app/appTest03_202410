@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Book extends Model
 {
@@ -11,7 +12,6 @@ class Book extends Model
 
     public function user()
     {
-        // 書籍はユーザに属している
         return $this->belongsTo(User::class);
     }
 }
